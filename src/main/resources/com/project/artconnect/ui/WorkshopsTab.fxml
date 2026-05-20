@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="10.0"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.project.artconnect.ui.WorkshopController">
+
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+    </padding>
+
+    <GridPane hgap="10.0" vgap="8.0">
+        <columnConstraints>
+            <ColumnConstraints percentWidth="15" />
+            <ColumnConstraints percentWidth="35" />
+            <ColumnConstraints percentWidth="15" />
+            <ColumnConstraints percentWidth="35" />
+        </columnConstraints>
+
+        <Label text="Title:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+        <TextField fx:id="titleField" promptText="Workshop title" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+        <Label text="Instructor:" GridPane.rowIndex="0" GridPane.columnIndex="2" />
+        <ComboBox fx:id="instructorField" promptText="Instructor" GridPane.rowIndex="0" GridPane.columnIndex="3" />
+
+        <Label text="Date:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+        <TextField fx:id="dateField" promptText="YYYY-MM-DDTHH:MM" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+        <Label text="Price:" GridPane.rowIndex="1" GridPane.columnIndex="2" />
+        <TextField fx:id="priceField" promptText="Price" GridPane.rowIndex="1" GridPane.columnIndex="3" />
+
+        <Label text="Level:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+        <TextField fx:id="levelField" promptText="BEGINNER / INTERMEDIATE / ADVANCED" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+        <Label text="Location:" GridPane.rowIndex="2" GridPane.columnIndex="2" />
+        <TextField fx:id="locationField" promptText="Location" GridPane.rowIndex="2" GridPane.columnIndex="3" />
+    </GridPane>
+
+    <HBox spacing="10.0" alignment="CENTER_LEFT">
+        <Button text="Add Workshop" onAction="#handleAddWorkshop" />
+        <Button text="Update Workshop" onAction="#handleUpdateWorkshop" />
+        <Button text="Delete Workshop" onAction="#handleDeleteWorkshop" />
+    </HBox>
+
+    <HBox spacing="10.0" alignment="CENTER_LEFT">
+        <Label text="Search:" />
+        <TextField fx:id="searchField" promptText="Search workshops..." HBox.hgrow="ALWAYS" />
+        <Button text="Search" onAction="#handleSearch" />
+        <Button text="Reset" onAction="#handleResetSearch" />
+    </HBox>
+
+    <TableView fx:id="workshopTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="titleColumn" text="Title" prefWidth="200" />
+            <TableColumn fx:id="instructorColumn" text="Instructor" prefWidth="150" />
+            <TableColumn fx:id="dateColumn" text="Date" prefWidth="150" />
+            <TableColumn fx:id="priceColumn" text="Price" prefWidth="80" />
+            <TableColumn fx:id="levelColumn" text="Level" prefWidth="100" />
+            <TableColumn fx:id="locationColumn" text="Location" prefWidth="160" />
+        </columns>
+    </TableView>
+</VBox>

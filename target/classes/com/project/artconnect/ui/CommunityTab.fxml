@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="10.0"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.project.artconnect.ui.CommunityController">
+
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+    </padding>
+
+    <GridPane hgap="10.0" vgap="8.0">
+        <columnConstraints>
+            <ColumnConstraints percentWidth="15" />
+            <ColumnConstraints percentWidth="35" />
+            <ColumnConstraints percentWidth="15" />
+            <ColumnConstraints percentWidth="35" />
+        </columnConstraints>
+
+        <Label text="Name:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+        <TextField fx:id="nameField" promptText="Member name" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+        <Label text="Email:" GridPane.rowIndex="0" GridPane.columnIndex="2" />
+        <TextField fx:id="emailField" promptText="Email" GridPane.rowIndex="0" GridPane.columnIndex="3" />
+
+        <Label text="City:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+        <TextField fx:id="cityField" promptText="City" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+        <Label text="Membership:" GridPane.rowIndex="1" GridPane.columnIndex="2" />
+        <TextField fx:id="membershipField" promptText="BASIC / PREMIUM" GridPane.rowIndex="1" GridPane.columnIndex="3" />
+    </GridPane>
+
+    <HBox spacing="10.0" alignment="CENTER_LEFT">
+        <Button text="Add Member" onAction="#handleAddMember" />
+        <Button text="Update Member" onAction="#handleUpdateMember" />
+        <Button text="Delete Member" onAction="#handleDeleteMember" />
+    </HBox>
+
+    <HBox spacing="10.0" alignment="CENTER_LEFT">
+        <Label text="Search:" />
+        <TextField fx:id="searchField" promptText="Search members..." HBox.hgrow="ALWAYS" />
+        <Button text="Search" onAction="#handleSearch" />
+        <Button text="Reset" onAction="#handleResetSearch" />
+    </HBox>
+
+    <TableView fx:id="memberTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="nameColumn" text="Name" prefWidth="250" />
+            <TableColumn fx:id="emailColumn" text="Email" prefWidth="250" />
+            <TableColumn fx:id="cityColumn" text="City" prefWidth="150" />
+            <TableColumn fx:id="membershipColumn" text="Membership" prefWidth="150" />
+        </columns>
+    </TableView>
+</VBox>

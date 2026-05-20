@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="10.0"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.project.artconnect.ui.ArtworkController">
+
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+    </padding>
+
+    <GridPane hgap="10.0" vgap="8.0">
+        <columnConstraints>
+            <ColumnConstraints percentWidth="15" />
+            <ColumnConstraints percentWidth="35" />
+            <ColumnConstraints percentWidth="15" />
+            <ColumnConstraints percentWidth="35" />
+        </columnConstraints>
+
+        <Label text="Title:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+        <TextField fx:id="titleField" promptText="Artwork title" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+        <Label text="Artist:" GridPane.rowIndex="0" GridPane.columnIndex="2" />
+        <ComboBox fx:id="artistField" promptText="Artist" GridPane.rowIndex="0" GridPane.columnIndex="3" />
+
+        <Label text="Type:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+        <TextField fx:id="typeField" promptText="PAINTING / MUSIC / OTHER" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+        <Label text="Creation year:" GridPane.rowIndex="1" GridPane.columnIndex="2" />
+        <TextField fx:id="creationYearField" promptText="Creation year" GridPane.rowIndex="1" GridPane.columnIndex="3" />
+
+        <Label text="Price:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+        <TextField fx:id="priceField" promptText="Price" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+        <Label text="Description:" GridPane.rowIndex="2" GridPane.columnIndex="2" />
+        <TextField fx:id="descriptionField" promptText="Description" GridPane.rowIndex="2" GridPane.columnIndex="3" />
+    </GridPane>
+
+    <HBox spacing="10.0" alignment="CENTER_LEFT">
+        <Button text="Add Artwork" onAction="#handleAddArtwork" />
+        <Button text="Update Artwork" onAction="#handleUpdateArtwork" />
+        <Button text="Delete Artwork" onAction="#handleDeleteArtwork" />
+    </HBox>
+
+    <HBox spacing="10.0" alignment="CENTER_LEFT">
+        <Label text="Search:" />
+        <TextField fx:id="searchField" promptText="Search artworks..." HBox.hgrow="ALWAYS" />
+        <Button text="Search" onAction="#handleSearch" />
+        <Button text="Reset" onAction="#handleResetSearch" />
+    </HBox>
+
+    <TableView fx:id="artworkTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="titleColumn" text="Title" prefWidth="200" />
+            <TableColumn fx:id="artistColumn" text="Artist" prefWidth="150" />
+            <TableColumn fx:id="typeColumn" text="Type" prefWidth="100" />
+            <TableColumn fx:id="creationYearColumn" text="Creation Year" prefWidth="130" />
+            <TableColumn fx:id="descriptionColumn" text="Description" prefWidth="260" />
+            <TableColumn fx:id="priceColumn" text="Price" prefWidth="100" />
+            <TableColumn fx:id="statusColumn" text="Status" prefWidth="150" />
+        </columns>
+    </TableView>
+</VBox>

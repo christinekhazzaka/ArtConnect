@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="10.0"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.project.artconnect.ui.ExhibitionController">
+
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+    </padding>
+
+    <GridPane hgap="10.0" vgap="8.0">
+        <columnConstraints>
+            <ColumnConstraints percentWidth="15" />
+            <ColumnConstraints percentWidth="35" />
+            <ColumnConstraints percentWidth="15" />
+            <ColumnConstraints percentWidth="35" />
+        </columnConstraints>
+
+        <Label text="Title:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+        <TextField fx:id="titleField" promptText="Exhibition title" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+        <Label text="Location:" GridPane.rowIndex="0" GridPane.columnIndex="2" />
+        <ComboBox fx:id="galleryField" promptText="Location" GridPane.rowIndex="0" GridPane.columnIndex="3" />
+
+        <Label text="Exhibition date:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+        <TextField fx:id="startDateField" promptText="YYYY-MM-DD" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+        <Label text="Capacity:" GridPane.rowIndex="1" GridPane.columnIndex="2" />
+        <TextField fx:id="capacityField" promptText="Capacity" GridPane.rowIndex="1" GridPane.columnIndex="3" />
+
+        <Label text="Description:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+        <TextField fx:id="descriptionField" promptText="Description" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="3" />
+    </GridPane>
+
+    <HBox spacing="10.0" alignment="CENTER_LEFT">
+        <Button text="Add Exhibition" onAction="#handleAddExhibition" />
+        <Button text="Update Exhibition" onAction="#handleUpdateExhibition" />
+        <Button text="Delete Exhibition" onAction="#handleDeleteExhibition" />
+    </HBox>
+
+    <HBox spacing="10.0" alignment="CENTER_LEFT">
+        <Label text="Search:" />
+        <TextField fx:id="searchField" promptText="Search exhibitions..." HBox.hgrow="ALWAYS" />
+        <Button text="Search" onAction="#handleSearch" />
+        <Button text="Reset" onAction="#handleResetSearch" />
+    </HBox>
+
+    <TableView fx:id="exhibitionTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="titleColumn" text="title" prefWidth="220" />
+            <TableColumn fx:id="descriptionColumn" text="description" prefWidth="360" />
+            <TableColumn fx:id="dateColumn" text="event_date" prefWidth="130" />
+            <TableColumn fx:id="locationColumn" text="location" prefWidth="180" />
+            <TableColumn fx:id="capacityColumn" text="capacity" prefWidth="100" />
+        </columns>
+    </TableView>
+</VBox>
