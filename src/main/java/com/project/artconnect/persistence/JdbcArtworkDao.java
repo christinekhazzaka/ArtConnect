@@ -35,7 +35,7 @@ public class JdbcArtworkDao implements ArtworkDao {
                     u.email AS artist_email
                 FROM Artwork aw
                 JOIN Artist ar ON aw.artist_id = ar.artist_id
-                JOIN UserAccount u ON ar.user_id = u.user_id
+                JOIN vw_users_sanitized u ON ar.user_id = u.user_id
                 ORDER BY aw.title
                 """;
 
@@ -166,7 +166,7 @@ public class JdbcArtworkDao implements ArtworkDao {
                     u.email AS artist_email
                 FROM Artwork aw
                 JOIN Artist ar ON aw.artist_id = ar.artist_id
-                JOIN UserAccount u ON ar.user_id = u.user_id
+                JOIN vw_users_sanitized u ON ar.user_id = u.user_id
                 WHERE u.name = ?
                 ORDER BY aw.title
                 """;
@@ -211,10 +211,9 @@ public class JdbcArtworkDao implements ArtworkDao {
 
     private String findArtistIdByName(String artistName) {
         String sql = """
-                SELECT a.artist_id
-                FROM Artist a
-                JOIN UserAccount u ON a.user_id = u.user_id
-                WHERE u.name = ?
+                SELECT artist_id
+                FROM vw_artist_summary
+                WHERE name = ?
                 """;
 
         try (

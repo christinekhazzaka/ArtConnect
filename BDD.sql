@@ -1,4 +1,3 @@
-
 use ArtConnect;
 
 CREATE TABLE UserAccount(

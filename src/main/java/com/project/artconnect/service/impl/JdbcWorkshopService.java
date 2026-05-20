@@ -8,7 +8,6 @@ import com.project.artconnect.service.WorkshopService;
 import com.project.artconnect.util.ConnectionManager;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -58,21 +57,16 @@ public class JdbcWorkshopService implements WorkshopService {
 
         ensureBookingTableExists();
 
-        String sql = """
-                INSERT INTO WorkshopBooking(booking_id, workshop_id, member_id, booking_date, payment_status)
-                VALUES (?, ?, ?, ?, ?)
-                """;
+        String sql = "{CALL sp_book_workshop(?, ?, ?)}";
 
         try (Connection connection = ConnectionManager.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+             CallableStatement statement = connection.prepareCall(sql)) {
             statement.setString(1, generateId("B"));
-            statement.setString(2, findWorkshopIdByTitle(workshop.getTitle()));
-            statement.setString(3, findMemberIdByName(member.getName()));
-            statement.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
-            statement.setString(5, "PENDING");
+            statement.setString(2, findMemberIdByName(member.getName()));
+            statement.setString(3, findWorkshopIdByTitle(workshop.getTitle()));
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Error while booking workshop.", e);
+            throw new RuntimeException("Error while booking workshop with stored procedure.", e);
         }
     }
 
@@ -86,13 +80,10 @@ public class JdbcWorkshopService implements WorkshopService {
 
         List<Booking> bookings = new ArrayList<>();
         String sql = """
-                SELECT w.title, wb.booking_date, wb.payment_status
-                FROM WorkshopBooking wb
-                JOIN Workshop w ON wb.workshop_id = w.workshop_id
-                JOIN CommunityMember cm ON wb.member_id = cm.member_id
-                JOIN UserAccount u ON cm.user_id = u.user_id
-                WHERE u.name = ?
-                ORDER BY wb.booking_date DESC
+                SELECT workshop_title, booking_date, payment_status
+                FROM vw_member_workshop_bookings
+                WHERE member_name = ?
+                ORDER BY booking_date DESC
                 """;
 
         try (Connection connection = ConnectionManager.getConnection();
@@ -101,7 +92,7 @@ public class JdbcWorkshopService implements WorkshopService {
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    Optional<Workshop> workshop = workshopDao.findByTitle(resultSet.getString("title"));
+                    Optional<Workshop> workshop = workshopDao.findByTitle(resultSet.getString("workshop_title"));
                     if (workshop.isPresent()) {
                         Booking booking = new Booking(workshop.get(), member);
                         Timestamp bookingDate = resultSet.getTimestamp("booking_date");
@@ -171,7 +162,7 @@ public class JdbcWorkshopService implements WorkshopService {
         return findSingleId("""
                 SELECT cm.member_id
                 FROM CommunityMember cm
-                JOIN UserAccount u ON cm.user_id = u.user_id
+                JOIN vw_users_sanitized u ON cm.user_id = u.user_id
                 WHERE u.name = ?
                 """, name, "Community member not found: " + name);
     }

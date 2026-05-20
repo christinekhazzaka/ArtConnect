@@ -60,18 +60,22 @@ public class JdbcWorkshopDao implements WorkshopDao {
     public void save(Workshop workshop) {
         ensureTableExists();
 
-        String sql = """
-                INSERT INTO Workshop(workshop_id, title, description, workshop_date, location, capacity, price, level, artist_id)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """;
+        String sql = "{CALL sp_create_workshop(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 
         try (Connection connection = ConnectionManager.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+             CallableStatement statement = connection.prepareCall(sql)) {
             statement.setString(1, generateId("W"));
-            bindWorkshop(statement, workshop);
+            statement.setString(2, workshop.getTitle());
+            statement.setString(3, safeText(workshop.getDescription(), ""));
+            statement.setDate(4, Date.valueOf(toLocalDate(workshop.getDate())));
+            statement.setString(5, safeText(workshop.getLocation(), "Workshop"));
+            statement.setInt(6, Math.max(1, workshop.getMaxParticipants()));
+            statement.setDouble(7, workshop.getPrice());
+            statement.setString(8, normalizeLevel(workshop.getLevel()));
+            statement.setString(9, findArtistIdByName(workshop.getInstructor().getName()));
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Error while saving workshop.", e);
+            throw new RuntimeException("Error while saving workshop with stored procedure.", e);
         }
     }
 
@@ -168,17 +172,6 @@ public class JdbcWorkshopDao implements WorkshopDao {
         return workshop;
     }
 
-    private void bindWorkshop(PreparedStatement statement, Workshop workshop) throws SQLException {
-        statement.setString(2, workshop.getTitle());
-        statement.setString(3, safeText(workshop.getDescription(), ""));
-        statement.setDate(4, Date.valueOf(toLocalDate(workshop.getDate())));
-        statement.setString(5, safeText(workshop.getLocation(), "Workshop"));
-        statement.setInt(6, Math.max(1, workshop.getMaxParticipants()));
-        statement.setDouble(7, workshop.getPrice());
-        statement.setString(8, normalizeLevel(workshop.getLevel()));
-        statement.setString(9, findArtistIdByName(workshop.getInstructor().getName()));
-    }
-
     private void ensureTableExists() {
         String createSql = """
                 CREATE TABLE IF NOT EXISTS Workshop (
@@ -240,10 +233,9 @@ public class JdbcWorkshopDao implements WorkshopDao {
 
     private String findArtistIdByName(String artistName) throws SQLException {
         String sql = """
-                SELECT a.artist_id
-                FROM Artist a
-                JOIN UserAccount u ON a.user_id = u.user_id
-                WHERE u.name = ?
+                SELECT artist_id
+                FROM vw_artist_summary
+                WHERE name = ?
                 """;
 
         try (Connection connection = ConnectionManager.getConnection();

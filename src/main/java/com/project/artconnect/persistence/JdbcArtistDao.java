@@ -106,7 +106,7 @@ public class JdbcArtistDao implements ArtistDao {
         String selectIds = """
                 SELECT a.artist_id, u.user_id
                 FROM Artist a
-                JOIN UserAccount u ON a.user_id = u.user_id
+                JOIN vw_users_sanitized u ON a.user_id = u.user_id
                 WHERE u.name = ?
                 """;
 
@@ -175,7 +175,7 @@ public class JdbcArtistDao implements ArtistDao {
         String findArtist = """
                 SELECT a.artist_id, u.user_id
                 FROM Artist a
-                JOIN UserAccount u ON a.user_id = u.user_id
+                JOIN vw_users_sanitized u ON a.user_id = u.user_id
                 WHERE u.name = ?
                 """;
 

@@ -19,7 +19,7 @@ public class JdbcCommunityMemberDao implements CommunityMemberDao {
         String sql = """
                 SELECT cm.member_id, cm.join_date, cm.city, cm.membership_type, u.user_id, u.name, u.email
                 FROM CommunityMember cm
-                JOIN UserAccount u ON cm.user_id = u.user_id
+                JOIN vw_users_sanitized u ON cm.user_id = u.user_id
                 WHERE u.name = ?
                 """;
 
@@ -46,7 +46,7 @@ public class JdbcCommunityMemberDao implements CommunityMemberDao {
         String sql = """
                 SELECT cm.member_id, cm.join_date, cm.city, cm.membership_type, u.user_id, u.name, u.email
                 FROM CommunityMember cm
-                JOIN UserAccount u ON cm.user_id = u.user_id
+                JOIN vw_users_sanitized u ON cm.user_id = u.user_id
                 ORDER BY u.name
                 """;
 
@@ -137,7 +137,7 @@ public class JdbcCommunityMemberDao implements CommunityMemberDao {
         String findSql = """
                 SELECT cm.member_id, u.user_id
                 FROM CommunityMember cm
-                JOIN UserAccount u ON cm.user_id = u.user_id
+                JOIN vw_users_sanitized u ON cm.user_id = u.user_id
                 WHERE u.name = ?
                 """;
 
